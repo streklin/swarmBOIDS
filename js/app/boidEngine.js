@@ -13,15 +13,9 @@ define(function(require) {
         for (var i = 0; i < this.boidSet.length; i++) {
             var current = this.boidSet[i];
 
-            var xMult = 1;
-            if (Math.random() > 0.5) xMult = -1;
-            var yMult = 1;
-            if (Math.random() > 0.5) yMult = -1;
+            current.x += current.speed * Math.cos(current.orientation);
+            current.y += current.speed * Math.sin(current.orientation);
 
-
-
-            current.x += xMult * Math.random() * 5;
-            current.y += yMult * Math.random() * 5;
         }
 
     };

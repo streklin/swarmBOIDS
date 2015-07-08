@@ -32,12 +32,11 @@ define(function(require) {
 
         var path = new Path2D();
 
-        path.moveTo(5, 0);
-        path.lineTo(7, 10);
-        path.lineTo(3, 10);
+        path.moveTo(0, 0);
+        path.lineTo(10, 2);
+        path.lineTo(0, 4);
 
         this.canvasCTX.fill(path);
-
 
         this.canvasCTX.restore();
 
