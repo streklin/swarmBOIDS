@@ -38,8 +38,6 @@ define(function(require) {
 
         this.canvasCTX.fill(path);
 
-        this.canvasCTX.rotate(rad * ( -1 ) );
-        this.canvasCTX.translate(-x, -y);
 
         this.canvasCTX.restore();
 
