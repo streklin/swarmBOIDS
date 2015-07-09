@@ -7,7 +7,7 @@ define(function(require) {
 
     function init() {
         var displayObject = new boidDisplay(800, 600);
-        var engine = new boidEngine(NUM_BOIDS);
+        var engine = new boidEngine(NUM_BOIDS, 800, 600);
         displayObject.boidSet = engine.boidSet;
 
         displayObject.draw();
