@@ -1,7 +1,7 @@
 define(function(require) {
 
     var BOID_CONSTANTS = {
-        min_boid_distance: 5,
+        min_boid_distance: 20,
         min_boid_speed: 2,
         max_boid_speed: 5,
         boid_nhd: 300,
@@ -13,7 +13,7 @@ define(function(require) {
         this.x = Math.floor(Math.random() * 800) + 1;
         this.y = Math.floor(Math.random() * 600) + 1;
         this.orientation = Math.random() * 2 * Math.PI;
-        this.speed = Math.random() * 3 + 1;
+        this.speed = Math.random() * BOID_CONSTANTS.max_boid_speed;
 
         //eventually I want to consider individually altering these values
         this.boid_nhd = BOID_CONSTANTS.boid_nhd;

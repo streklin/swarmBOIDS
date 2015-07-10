@@ -26,7 +26,7 @@ define(function (require) {
         var result = [];
 
         for (var j = 0; j < this.boidSet.length; j++) {
-            var distance = distanceMetric(current, this.boidSet[j]);
+            var distance = distanceMetric.call(this, current, this.boidSet[j]);
             if (distance < current.boid_nhd && distance !== 0) {
                 this.boidSet[j].distance = distance; //cache this calculation for later
                 result.push(this.boidSet[j]);
@@ -38,8 +38,10 @@ define(function (require) {
 
     function distanceMetric(boid1, boid2) {
 
-        var distanceSq = Math.pow(boid1.x - boid2.x, 2) + Math.pow(boid1.y - boid2.y, 2);
-        return Math.sqrt(distanceSq);
+        var distanceSq1 = Math.pow(boid1.x - boid2.x, 2) + Math.pow(boid1.y - boid2.y, 2);
+        var distanceSq2 = Math.pow(boid1.x - boid2.x - this.xBound, 2) + Math.pow(boid1.y - boid2.y - this.yBound, 2);
+
+        return Math.min(Math.sqrt(distanceSq2), Math.sqrt(distanceSq1));
 
     }
 
