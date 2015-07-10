@@ -3,7 +3,7 @@ define(function(require) {
     var boidDisplay = require('boidDisplay');
     var boidEngine = require('boidEngine');
 
-    var NUM_BOIDS = 100;
+    var NUM_BOIDS = 20;
 
     function init() {
         var displayObject = new boidDisplay(800, 600);
@@ -18,7 +18,6 @@ define(function(require) {
             displayObject.draw();
 
         }, 50);
-
 
     }
 
