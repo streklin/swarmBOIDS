@@ -12,7 +12,6 @@ define(function (require) {
 
     boidEngine.prototype.update = function () {
         updateBOIDS.call(this);
-        updatePositions.call(this);
     };
 
     function updateBOIDS() {
@@ -42,18 +41,6 @@ define(function (require) {
         var distanceSq2 = Math.pow(boid1.x - boid2.x - this.xBound, 2) + Math.pow(boid1.y - boid2.y - this.yBound, 2);
 
         return Math.min(Math.sqrt(distanceSq2), Math.sqrt(distanceSq1));
-
-    }
-
-    function updatePositions() {
-        for (var i = 0; i < this.boidSet.length; i++) {
-            var current = this.boidSet[i];
-            current.x += current.speed * Math.cos(current.orientation);
-            current.y += current.speed * Math.sin(current.orientation);
-
-            current.x = wrapValue(current.x, this.xBound);
-            current.y = wrapValue(current.y, this.yBound);
-        }
     }
 
     function initializeBOIDS(NUM_BOIDS) {
@@ -63,20 +50,6 @@ define(function (require) {
         }
     }
 
-    function wrapValue(value, maxBound) {
-        if (value < 0) {
-            value = maxBound + value;
-            return value;
-        }
-
-        if (value > maxBound) {
-            var diff = value - maxBound;
-            value = diff;
-            return value
-        }
-
-        return value;
-    }
 
     return boidEngine;
 
