@@ -5,6 +5,7 @@
 require.config({
     baseUrl: 'js/app',
     paths: {
+        jquery: '../libs/jquery'
     },
     deps: ['application']
 });

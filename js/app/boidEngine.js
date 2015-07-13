@@ -2,10 +2,11 @@ define(function (require) {
 
     var BOID = require('boid');
 
-    var boidEngine = function (NUM_BOIDS, xBound, yBound) {
+    var boidEngine = function (NUM_BOIDS, xBound, yBound, parameters) {
         this.boidSet = [];
         this.xBound = xBound;
         this.yBound = yBound;
+        this.parameters = parameters;
 
         initializeBOIDS.call(this, NUM_BOIDS);
     };
@@ -45,7 +46,7 @@ define(function (require) {
 
     function initializeBOIDS(NUM_BOIDS) {
         for (var i = 0; i < NUM_BOIDS; i++) {
-            var newBOID = new BOID();
+            var newBOID = new BOID(this.parameters, this.xBound, this.yBound);
             this.boidSet.push(newBOID);
         }
     }

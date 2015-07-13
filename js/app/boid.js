@@ -1,21 +1,14 @@
 define(function(require) {
 
-    var BOID_CONSTANTS = {
-        min_boid_distance: 25,
-        min_boid_speed: 2,
-        max_boid_speed: 5,
-        boid_nhd: 600,
-        delta_speed: 0.5,
-        delta_orientation: 0.05
-    };
 
-    var BOID = function() {
-        this.x = Math.floor(Math.random() * 800) + 1;
-        this.y = Math.floor(Math.random() * 600) + 1;
+    var BOID = function(BOID_CONSTANTS, xMax, yMax) {
+
+        this.BOID_CONSTANTS = BOID_CONSTANTS;
+
+        this.x = Math.floor(Math.random() * xMax) + 1;
+        this.y = Math.floor(Math.random() * yMax) + 1;
         this.orientation = Math.random() * 2 * Math.PI;
         this.speed = Math.random() * BOID_CONSTANTS.max_boid_speed;
-
-        //eventually I want to consider individually altering these values
         this.boid_nhd = BOID_CONSTANTS.boid_nhd;
     };
 
@@ -56,50 +49,58 @@ define(function(require) {
         averagePositionY /= nearbyBOIDS.length;
         averageSpeed /= nearbyBOIDS.length;
 
-        //am I slower than the nearby boids?
-        if (this.speed < averageSpeed) {
-            this.speed += BOID_CONSTANTS.delta_speed;
-            if (this.speed > BOID_CONSTANTS.max_boid_speed) this.speed = BOID_CONSTANTS.max_boid_speed;
-        } else if (this.speed > averageSpeed) {
-            this.speed -= BOID_CONSTANTS.delta_speed;
-            if (this.speed < BOID_CONSTANTS.min_boid_speed) this.speed = BOID_CONSTANTS.min_boid_speed;
-        }
+        averageSpeedRule.call(this, averageSpeed);
 
-        //am I too close
-        if (closestsDistance < BOID_CONSTANTS.min_boid_distance) {
-
-            var boidX = closestBoid.x - this.x;
-            var boidY = closestBoid.y - this.y;
-
-            var nextX = Math.cos(this.orientation);
-            var nextY = Math.sin(this.orientation);
-
-            var angle = innerProduct(boidX, boidY,nextX, nextY);
-
-            if (angle < 0) {
-                this.orientation += BOID_CONSTANTS.delta_orientation;
-            } else {
-                this.orientation -= BOID_CONSTANTS.delta_orientation;
-            }
-
+        if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
+           tooCloseRule.call(this, closestBoid);
         } else {
-            var boidX = averagePositionX - this.x;
-            var boidY = averagePositionY - this.y;
-
-            var nextX = Math.cos(this.orientation);
-            var nextY = Math.sin(this.orientation);
-
-            var angle = innerProduct(boidX, boidY,nextX, nextY);
-
-            if (angle < 0) {
-                this.orientation -= BOID_CONSTANTS.delta_orientation;
-            } else {
-                this.orientation += BOID_CONSTANTS.delta_orientation;
-            }
+            centerOfMassRule(this, averagePositionX, averagePositionY);
         }
 
 
     };
+
+    function averageSpeedRule(averageSpeed) {
+        if (this.speed < averageSpeed) {
+            this.speed += this.BOID_CONSTANTS.delta_speed;
+            if (this.speed > this.BOID_CONSTANTS.max_boid_speed) this.speed = this.BOID_CONSTANTS.max_boid_speed;
+        } else if (this.speed > averageSpeed) {
+            this.speed -= this.BOID_CONSTANTS.delta_speed;
+            if (this.speed < this.BOID_CONSTANTS.min_boid_speed) this.speed = this.BOID_CONSTANTS.min_boid_speed;
+        }
+    }
+
+    function tooCloseRule(closestBoid) {
+        var boidX = closestBoid.x - this.x;
+        var boidY = closestBoid.y - this.y;
+
+        var nextX = Math.cos(this.orientation);
+        var nextY = Math.sin(this.orientation);
+
+        var angle = innerProduct(boidX, boidY,nextX, nextY);
+
+        if (angle < 0) {
+            this.orientation += this.BOID_CONSTANTS.delta_orientation;
+        } else {
+            this.orientation -= this.BOID_CONSTANTS.delta_orientation;
+        }
+    }
+
+    function centerOfMassRule(averagePositionX, averagePositionY) {
+        var boidX = averagePositionX - this.x;
+        var boidY = averagePositionY - this.y;
+
+        var nextX = Math.cos(this.orientation);
+        var nextY = Math.sin(this.orientation);
+
+        var angle = innerProduct(boidX, boidY,nextX, nextY);
+
+        if (angle < 0) {
+            this.orientation -= this.BOID_CONSTANTS.delta_orientation;
+        } else {
+            this.orientation += this.BOID_CONSTANTS.delta_orientation;
+        }
+    }
 
     function innerProduct(x1, y1, x2, y2) {
         return x1 * -y2 +  x2 * y2;
