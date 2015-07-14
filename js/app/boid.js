@@ -54,7 +54,7 @@ define(function(require) {
         if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
            tooCloseRule.call(this, closestBoid);
         } else {
-            centerOfMassRule(this, averagePositionX, averagePositionY);
+            centerOfMassRule.call(this, averagePositionX, averagePositionY);
         }
 
 

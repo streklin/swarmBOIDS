@@ -21,13 +21,52 @@
             <canvas style="border:1px solid #e1e1e1" id="boidUI"></canvas>
         </div>
 
+        <div class="parameters">
+            <label>Number Of Boids:</label><input type="text" id="num_boids" />
+        </div>
+
         <div class="visualizationControls">
+
+            <div class="parameters">
+               <div class="parameter-input">
+                   <label>Minimum BOID Distance:</label><input type="text" id="min_boid_distance" />
+               </div>
+
+                <div class="parameter-input">
+                    <label>Minimum BOID Speed:</label><input type="text" id="min_boid_speed" />
+                </div>
+
+                <div class="parameter-input">
+                    <label>Maximum BOID Speed:</label><input type="text" id="max_boid_speed" />
+                </div>
+
+                <div class="parameter-input">
+                    <label>BOID Neighbourhood Size:</label><input type="text" id="boid_nhd" />
+                </div>
+
+                <div class="parameter-input">
+                    <label>BOID Delta Speed:</label><input type="text" id="delta_speed" />
+                </div>
+
+                <div class="parameter-input">
+                    <label>BOID Delta Orientation:</label><input type="text" id="delta_orientation" />
+                </div>
+
+            </div>
 
             <input type="button" id="runVisualizationBtn" value="RUN"/>
 
         </div>
 
         <div class="evolutionControls">
+
+            <div class="parameters">
+                <div class="parameter-input">
+                    <label>Number of Iterations:</label><input type="text" id="iterations" />
+                </div>
+            </div>
+
+            <input type="button" id="runEvolutionBtn" value="EVOLVE" />
 
         </div>
 

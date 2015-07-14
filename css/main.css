@@ -270,3 +270,14 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+.visualizationControls {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.parameters {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+}
