@@ -8,7 +8,11 @@ define(function(require) {
 
     physics.prototype.update = function() {
         for (var i = 0; i < this.boidSet.length; i++) {
+
             var current = this.boidSet[i];
+
+            if (current.isTarget) continue;
+
             current.x += current.speed * Math.cos(current.orientation);
             current.y += current.speed * Math.sin(current.orientation);
 

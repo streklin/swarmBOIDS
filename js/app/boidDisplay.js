@@ -13,7 +13,12 @@ define(function(require) {
 
         for(var i = 0; i < this.boidSet.length; i++) {
             var currentBoid = this.boidSet[i];
-            drawTriangle.call(this, currentBoid);
+
+            if (currentBoid.isTarget) {
+                drawTarget.call(this, currentBoid);
+            } else {
+                drawTriangle.call(this, currentBoid);
+            }
         }
 
     };
@@ -40,6 +45,15 @@ define(function(require) {
 
         this.canvasCTX.restore();
 
+    }
+
+    function drawTarget(currentBoid) {
+        var x = currentBoid.x;
+        var y = currentBoid.y;
+
+        this.canvasCTX.fillStyle = '#FF0000';
+        this.canvasCTX.fillRect(x-5,y-5,10,10);
+        this.canvasCTX.fillStyle = '#000';
     }
 
     function setupCanvas(width, height) {

@@ -9,6 +9,7 @@ define(function (require) {
         this.parameters = parameters;
 
         initializeBOIDS.call(this, NUM_BOIDS);
+        initializeTargetBOID.call(this);
     };
 
     boidEngine.prototype.update = function () {
@@ -17,6 +18,9 @@ define(function (require) {
 
     function updateBOIDS() {
         for (var i = 0; i < this.boidSet.length; i++) {
+
+            if (this.boidSet[i].isTarget) continue;
+
             var nhdBOIDS = findBOIDSNearTarget.call(this, this.boidSet[i]);
             this.boidSet[i].update(nhdBOIDS);
         }
@@ -51,6 +55,12 @@ define(function (require) {
         }
     }
 
+    function initializeTargetBOID() {
+        var targetBOID = new BOID({}, this.xBound, this.yBound);
+        targetBOID.isTarget = true;
+
+        this.boidSet.push(targetBOID);
+    }
 
     return boidEngine;
 
