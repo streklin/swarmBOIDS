@@ -35,9 +35,9 @@ define(function(require) {
         var num_boids = parseInt($('#num_boids').val());
 
         if (this.visualizationController === null) {
-            this.visualizationController = new visualizationObj(parameters, 1600, 600, num_boids);
+            this.visualizationController = new visualizationObj(parameters, 1600, 1200, num_boids);
         } else {
-            this.visualizationController.reset(parameters, 1600, 600, num_boids);
+            this.visualizationController.reset(parameters, 1600, 1200, num_boids);
         }
 
         this.visualizationController.run();

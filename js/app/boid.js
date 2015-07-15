@@ -46,14 +46,16 @@ define(function (require) {
             if (nearbyBOIDS[i].isTarget) {
                 targetX = nearbyBOIDS[i].x;
                 targetY = nearbyBOIDS[i].y;
+            } else {
+                //average speed
+                averageSpeed += nearbyBOIDS[i].speed;
+
+                //average position
+                averagePositionX += nearbyBOIDS[i].x;
+                averagePositionY += nearbyBOIDS[i].y;
+
             }
 
-            //average speed
-            averageSpeed += nearbyBOIDS[i].speed;
-
-            //average position
-            averagePositionX += nearbyBOIDS[i].x;
-            averagePositionY += nearbyBOIDS[i].y;
         }
 
         averagePositionX /= nearbyBOIDS.length;

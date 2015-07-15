@@ -16,6 +16,12 @@ define(function (require) {
         updateBOIDS.call(this);
     };
 
+    boidEngine.prototype.fitness = function(iteration) {
+
+        
+
+    };
+
     function updateBOIDS() {
         for (var i = 0; i < this.boidSet.length; i++) {
 
@@ -56,10 +62,10 @@ define(function (require) {
     }
 
     function initializeTargetBOID() {
-        var targetBOID = new BOID({}, this.xBound, this.yBound);
-        targetBOID.isTarget = true;
-
-        this.boidSet.push(targetBOID);
+        this.targetBOID = new BOID({}, this.xBound, this.yBound);
+        this.targetBOID.isTarget = true;
+        this.targetBOID.speed = 0;
+        this.boidSet.push(this.targetBOID);
     }
 
     return boidEngine;
