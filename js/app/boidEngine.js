@@ -18,7 +18,7 @@ define(function (require) {
 
     boidEngine.prototype.fitness = function(iteration) {
 
-        
+
 
     };
 

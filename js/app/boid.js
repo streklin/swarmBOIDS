@@ -93,7 +93,7 @@ define(function (require) {
 
         var angle = innerProduct(boidX, boidY, nextX, nextY);
 
-        if (angle < 0) {
+        if (angle > 0) {
             this.orientation += this.BOID_CONSTANTS.delta_orientation;
         } else {
             this.orientation -= this.BOID_CONSTANTS.delta_orientation;
@@ -110,7 +110,8 @@ define(function (require) {
         var angle = innerProduct(boidX, boidY, nextX, nextY);
 
 
-        if (angle < 0) {
+
+        if (angle > 0) {
             this.orientation -= this.BOID_CONSTANTS.delta_orientation;
         } else {
             this.orientation += this.BOID_CONSTANTS.delta_orientation;
@@ -120,7 +121,7 @@ define(function (require) {
     }
 
     function innerProduct(x1, y1, x2, y2) {
-        return x1 * -y2 + x2 * y2;
+        return x1 * y2 - y1 * x2;
     }
 
     return BOID;
