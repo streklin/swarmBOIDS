@@ -21,6 +21,14 @@
             <canvas style="border:1px solid #e1e1e1" id="boidUI"></canvas>
         </div>
 
+        <div>
+            <label>Iteration:</label> <span id="iterationsCount"></span>
+            <br/>
+            <label>Fitness:</label> <span id="fitnessValue"></span>
+            <br />
+            <label>Trial:</label> <span id="trailNumber"></span>
+        </div>
+
         <div class="parameters">
             <label>Number Of Boids:</label><input type="text" id="num_boids" />
         </div>
@@ -55,6 +63,7 @@
             </div>
 
             <input type="button" id="runVisualizationBtn" value="RUN"/>
+            <input type="button" id="runSimulation" value="TRIALS" />
 
         </div>
 
@@ -67,6 +76,10 @@
             </div>
 
             <input type="button" id="runEvolutionBtn" value="EVOLVE" />
+
+        </div>
+
+        <div id="results">
 
         </div>
 

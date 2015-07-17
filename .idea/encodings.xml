@@ -8,6 +8,8 @@
     <file url="file://$PROJECT_DIR$/js/app/boidEngine.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/app/evolution.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/app/physics.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/js/app/simulator.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/js/app/statistics.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/app/ui.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/app/visualization.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/main.js" charset="UTF-8" />

@@ -1,29 +1,39 @@
-define(function(require) {
+define(function (require) {
 
     var boidDisplay = require('boidDisplay');
     var boidEngine = require('boidEngine');
     var physics = require('physics');
+    var $ = require('jquery');
 
-    var visualization = function(parameters,x, y, num_boids) {
-        setupSimulation.call(this,parameters,x,y,num_boids);
+    var visualization = function (parameters, x, y, num_boids) {
+        setupSimulation.call(this, parameters, x, y, num_boids);
     };
 
 
-    visualization.prototype.run = function() {
+    visualization.prototype.run = function () {
 
         var self = this;
 
-         this.intervalToken = setInterval(function() {
+        this.iterations = 0;
 
-             self.engine.update();
-             self.physicsEngine.update();
-             self.displayObject.draw();
+        this.intervalToken = setInterval(function () {
+            self.iterations++;
+            self.engine.update();
+            self.physicsEngine.update();
+            self.displayObject.draw();
 
-         }, 50);
+            $('#iterationsCount').text(self.iterations);
+
+            if (self.iterations >= 6000) {
+                clearInterval(self.intervalToken);
+                $('#fitnessValue').text(self.engine.fitness / 6000);
+            }
+
+        }, 50);
 
     };
 
-    visualization.prototype.reset = function(parameters, x, y, num_boids) {
+    visualization.prototype.reset = function (parameters, x, y, num_boids) {
         clearInterval(this.intervalToken);
         setupSimulation.call(this, parameters, x, y, num_boids);
     };
