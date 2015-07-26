@@ -28,8 +28,6 @@ define(function(require) {
                 this.physicsEngine.update();
             }
 
-
-
             var fitness = this.engine.fitness / iterations;
             trialResults.push(fitness);
         }
