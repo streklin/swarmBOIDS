@@ -36,8 +36,13 @@ define(function(require) {
             } else {
                 return -1;
             }
+        },
+        generateRandomError: function(original, errorLevel) {
+            var negative = 1;
+            if (Math.random() > Math.random()) negative = -1;
+            return original + (Math.random() * errorLevel * negative);
         }
-    }
+    };
 
 
     /*

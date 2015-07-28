@@ -1,13 +1,21 @@
 define(function (require) {
 
     var BOID = require('boid');
+    var statistics = require('statistics');
 
-    var boidEngine = function (NUM_BOIDS, xBound, yBound, parameters) {
+    var boidEngine = function (NUM_BOIDS, xBound, yBound, parameters, useErrorData, errorLevel) {
         this.boidSet = [];
         this.xBound = xBound;
         this.yBound = yBound;
         this.parameters = parameters;
         this.fitness = 0;
+        this.useErrorData = false;
+        this.errorLevel = 0.00;
+
+        if (typeof(useErrorData) !== 'undefined') {
+            this.useErrorData = useErrorData;
+            this.errorLevel = errorLevel;
+        }
 
         initializeBOIDS.call(this, NUM_BOIDS);
         initializeTargetBOID.call(this);
@@ -37,6 +45,12 @@ define(function (require) {
 
         for (var j = 0; j < this.boidSet.length; j++) {
             var distance = distanceMetric.call(this, current, this.boidSet[j]);
+
+            //insert uncertainty in the distance measurement
+            if (this.useErrorData && distance !== 0) {
+                distance = statistics.generateRandomError(distance, this.errorLevel);
+            }
+
             if (distance < current.boid_nhd && distance !== 0) {
                 this.boidSet[j].distance = distance; //cache this calculation for later
                 result.push(this.boidSet[j]);
@@ -57,6 +71,8 @@ define(function (require) {
     function initializeBOIDS(NUM_BOIDS) {
         for (var i = 0; i < NUM_BOIDS; i++) {
             var newBOID = new BOID(this.parameters, this.xBound, this.yBound);
+            newBOID.useErrorData = this.useErrorData;
+            newBOID.errorLevel = this.errorLevel;
             this.boidSet.push(newBOID);
         }
     }

@@ -38,16 +38,14 @@ define(function (require) {
         setupSimulation.call(this, parameters, x, y, num_boids);
     };
 
-
     function setupSimulation(parameters, x, y, num_boids) {
         this.displayObject = new boidDisplay(x, y);
-        this.engine = new boidEngine(num_boids, x, y, parameters);
+        this.engine = new boidEngine(num_boids, x, y, parameters, true, 0.99);
         this.physicsEngine = new physics(this.engine.boidSet, x, y);
         this.displayObject.boidSet = this.engine.boidSet;
         this.displayObject.draw();
     }
 
     return visualization;
-
 
 });

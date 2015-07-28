@@ -1,5 +1,6 @@
 define(function (require) {
 
+    var statistics = require('statistics');
 
     var BOID = function (BOID_CONSTANTS, xMax, yMax) {
 
@@ -62,6 +63,14 @@ define(function (require) {
         averagePositionY /= nearbyBOIDS.length;
         averageSpeed /= nearbyBOIDS.length;
 
+        if (this.useErrorData) {
+            averageSpeed = statistics.generateRandomError(averageSpeed, this.errorLevel);
+            averagePositionX = statistics.generateRandomError(averagePositionX, this.errorLevel);
+            averagePositionY = statistics.generateRandomError(averagePositionY, this.errorLevel);
+            targetX = statistics.generateRandomError(targetX, this.errorLevel);
+            targetY = statistics.generateRandomError(targetY, this.errorLevel);
+        }
+
         averageSpeedRule.call(this, averageSpeed);
 
         if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
@@ -75,11 +84,17 @@ define(function (require) {
     };
 
     function averageSpeedRule(averageSpeed) {
+        var deltaSpeed = this.BOID_CONSTANTS.delta_speed;
+
+        if (this.useErrorData) {
+            deltaSpeed = statistics.generateRandomError(deltaSpeed, this.errorLevel);
+        }
+
         if (this.speed < averageSpeed) {
-            this.speed += this.BOID_CONSTANTS.delta_speed;
+            this.speed += deltaSpeed;
             if (this.speed > this.BOID_CONSTANTS.max_boid_speed) this.speed = this.BOID_CONSTANTS.max_boid_speed;
         } else if (this.speed > averageSpeed) {
-            this.speed -= this.BOID_CONSTANTS.delta_speed;
+            this.speed -= deltaSpeed;
             if (this.speed < this.BOID_CONSTANTS.min_boid_speed) this.speed = this.BOID_CONSTANTS.min_boid_speed;
         }
     }
@@ -93,10 +108,16 @@ define(function (require) {
 
         var angle = innerProduct(boidX, boidY, nextX, nextY);
 
+        var deltaO = this.BOID_CONSTANTS.delta_orientation;
+
+        if (this.useErrorData) {
+            deltaO = statistics.generateRandomError(deltaO, this.errorLevel);
+        }
+
         if (angle > 0) {
-            this.orientation += this.BOID_CONSTANTS.delta_orientation;
+            this.orientation += deltaO;
         } else {
-            this.orientation -= this.BOID_CONSTANTS.delta_orientation;
+            this.orientation -= deltaO;
         }
     }
 
@@ -110,14 +131,18 @@ define(function (require) {
         var angle = innerProduct(boidX, boidY, nextX, nextY);
 
 
+        var deltaO = this.BOID_CONSTANTS.delta_orientation;
 
-        if (angle > 0) {
-            this.orientation -= this.BOID_CONSTANTS.delta_orientation;
-        } else {
-            this.orientation += this.BOID_CONSTANTS.delta_orientation;
+        if (this.useErrorData) {
+            deltaO = statistics.generateRandomError(deltaO, this.errorLevel);
         }
 
 
+        if (angle > 0) {
+            this.orientation -= deltaO;
+        } else {
+            this.orientation += deltaO;
+        }
     }
 
     function innerProduct(x1, y1, x2, y2) {
