@@ -26,7 +26,7 @@ define(function(require) {
     };
 
     function runEvolution() {
-        var ea = new evolutionObj(10, 100, 0.01, 0.60, 1600, 1200);
+        var ea = new evolutionObj(10, 250, 0.005, 0.40, 1600, 1200);
         var results = ea.run(50);
 
         console.log(results);

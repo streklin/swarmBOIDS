@@ -2,6 +2,7 @@ define(function (require) {
 
     var simulatorObj = require('simulator');
     var Statistics = require('statistics');
+    var $ = require('jquery');
 
     var EVOLUTION_CONSTANTS = {
         MAX_NHD_SIZE: 250,
@@ -32,13 +33,14 @@ define(function (require) {
             this.wheelPosition = 0;
             var trialResults = [];
             var totalFitness = 0;
+            var trialStatistics = [];
 
             for (var p = 0; p < this.populationSize; p++) {
 
                 var parameters = this.population[p];
                 var simulation = new simulatorObj(parameters, this.xLimit, this.yLimit, num_boids);
 
-                var fitnessResults = simulation.run(10, 2500);
+                var fitnessResults = simulation.run(5, 1500);
 
                 //calculate fitness statistics
                 var average = Statistics.findAverage(fitnessResults);
@@ -50,10 +52,14 @@ define(function (require) {
                 });
 
                 totalFitness += average;
+                trialStatistics.push(average);
             }
 
             trialResults = populationSort.call(this, trialResults, num_boids, totalFitness);
 
+            var trialAverage = Statistics.findAverage(trialStatistics);
+            var html = '<div><span>Trial #' + t + 'Average Fitness :</span>' + trialAverage + '</div>';
+            $('#results').append(html);
 
             /*
             Create the next generation.
@@ -148,7 +154,7 @@ define(function (require) {
     }
 
     function spinWheel(totalFitness) {
-        this.wheelPosition += Math.floor(Math.random() * totalFitness);
+        this.wheelPosition += Math.random() * 5 * totalFitness;
         this.wheelPosition = this.wheelPosition % totalFitness;
     }
 
