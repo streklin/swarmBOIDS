@@ -5,8 +5,8 @@ define(function (require) {
     var physics = require('physics');
     var $ = require('jquery');
 
-    var visualization = function (parameters, x, y, num_boids) {
-        setupSimulation.call(this, parameters, x, y, num_boids);
+    var visualization = function (parameters, x, y, num_boids, errorLevel) {
+        setupSimulation.call(this, parameters, x, y, num_boids, errorLevel);
     };
 
 
@@ -33,14 +33,14 @@ define(function (require) {
 
     };
 
-    visualization.prototype.reset = function (parameters, x, y, num_boids) {
+    visualization.prototype.reset = function (parameters, x, y, num_boids, errorLevel) {
         clearInterval(this.intervalToken);
-        setupSimulation.call(this, parameters, x, y, num_boids);
+        setupSimulation.call(this, parameters, x, y, num_boids, errorLevel);
     };
 
-    function setupSimulation(parameters, x, y, num_boids) {
+    function setupSimulation(parameters, x, y, num_boids, errorLevel) {
         this.displayObject = new boidDisplay(x, y);
-        this.engine = new boidEngine(num_boids, x, y, parameters, true, 0.99);
+        this.engine = new boidEngine(num_boids, x, y, parameters, true,  errorLevel);
         this.physicsEngine = new physics(this.engine.boidSet, x, y);
         this.displayObject.boidSet = this.engine.boidSet;
         this.displayObject.draw();

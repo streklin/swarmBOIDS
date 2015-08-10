@@ -26,8 +26,12 @@ define(function(require) {
     };
 
     function runEvolution() {
-        var ea = new evolutionObj(10, 250, 0.005, 0.40, 1600, 1200);
-        var results = ea.run(50);
+        var errorLevel = parseFloat($('#errorLevel').val());
+        var num_boids = parseInt($('#num_boids').val());
+
+
+        var ea = new evolutionObj(10, 250, 0.005, 0.40, 800, 800);
+        var results = ea.run(num_boids, errorLevel);
 
         console.log(results);
     }
@@ -51,9 +55,10 @@ define(function(require) {
         parameters.delta_orientation = parseFloat($('#delta_orientation').val());
 
         var num_boids = parseInt($('#num_boids').val());
+        var errorLevel = parseFloat($('#errorLevel').val());
 
-        var simulation = new simulatorObj(parameters, 1600, 1200, num_boids);
-        var results = simulation.run(100, 2500);
+        var simulation = new simulatorObj(parameters, 800, 800, num_boids);
+        var results = simulation.run(100, 2500, errorLevel);
 
         alert('Simulation Complete');
 
@@ -93,11 +98,12 @@ define(function(require) {
         parameters.delta_orientation = parseFloat($('#delta_orientation').val());
 
         var num_boids = parseInt($('#num_boids').val());
+        var errorLevel = parseFloat($('#errorLevel').val());
 
         if (this.visualizationController === null) {
-            this.visualizationController = new visualizationObj(parameters, 1600, 1200, num_boids);
+            this.visualizationController = new visualizationObj(parameters, 800, 800, num_boids, errorLevel);
         } else {
-            this.visualizationController.reset(parameters, 1600, 1200, num_boids);
+            this.visualizationController.reset(parameters, 800, 800, num_boids, errorLevel);
         }
 
         this.visualizationController.run();

@@ -41,6 +41,10 @@ define(function(require) {
         path.lineTo(10, 2);
         path.lineTo(0, 4);
 
+        if (currentBoid.sendingSignal) {
+            this.canvasCTX.fillStyle = '#00FF00';
+        }
+
         this.canvasCTX.fill(path);
 
         this.canvasCTX.restore();

@@ -13,12 +13,15 @@ define(function (require) {
         this.boid_nhd = BOID_CONSTANTS.boid_nhd;
 
         this.isTarget = false;
+        this.sendingSignal = false;
 
     };
 
-    BOID.prototype.update = function (nearbyBOIDS) {
+    BOID.prototype.update = function (nearbyBOIDS, signals) {
 
-        if (nearbyBOIDS.length === 0) return;
+        var transmission = {};
+
+        if (nearbyBOIDS.length === 0) return calculateTransmission(signals, this.x, this.y);
 
         var averageSpeed = 0;
         var averagePositionX = 0;
@@ -47,6 +50,19 @@ define(function (require) {
             if (nearbyBOIDS[i].isTarget) {
                 targetX = nearbyBOIDS[i].x;
                 targetY = nearbyBOIDS[i].y;
+
+                if (this.useErrorData) {
+                    targetX = statistics.generateRandomError(nearbyBOIDS[i].x, this.errorLevel);
+                    targetY = statistics.generateRandomError(nearbyBOIDS[i].y, this.errorLevel);
+                }
+
+                var signal = {
+                    xs: targetX,
+                    ys: targetY
+                };
+
+                signals.push(signal);
+
             } else {
                 //average speed
                 averageSpeed += nearbyBOIDS[i].speed;
@@ -67,19 +83,23 @@ define(function (require) {
             averageSpeed = statistics.generateRandomError(averageSpeed, this.errorLevel);
             averagePositionX = statistics.generateRandomError(averagePositionX, this.errorLevel);
             averagePositionY = statistics.generateRandomError(averagePositionY, this.errorLevel);
-            targetX = statistics.generateRandomError(targetX, this.errorLevel);
-            targetY = statistics.generateRandomError(targetY, this.errorLevel);
         }
+
+        var believedTarget = calculateTransmission(signals, this.x, this.y);
 
         averageSpeedRule.call(this, averageSpeed);
 
         if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
             tooCloseRule.call(this, closestBoid);
-        } else if (targetX > 0 && targetY > 0) {
-            targetRule.call(this, targetX, targetY);
+        } else if (believedTarget !== null) {
+            targetRule.call(this, believedTarget.xs, believedTarget.ys);
         } else {
             targetRule.call(this, averagePositionX, averagePositionY);
         }
+
+        if (believedTarget) this.sendingSignal = true; else this.sendingSignal = false;
+
+        return believedTarget;
 
     };
 
@@ -147,6 +167,25 @@ define(function (require) {
 
     function innerProduct(x1, y1, x2, y2) {
         return x1 * y2 - y1 * x2;
+    }
+
+    function calculateTransmission(signals,x, y) {
+        if (signals.length == 0) return null;
+
+        var xPos = 0;
+        var yPos = 0;
+
+        for (var index = 0; index < signals.length; index++) {
+            xPos += signals[index].xs;
+            yPos += signals[index].ys;
+        }
+
+        return {
+            x: x,
+            y: y,
+            xs: xPos / signals.length,
+            ys: yPos / signals.length
+        };
     }
 
     return BOID;

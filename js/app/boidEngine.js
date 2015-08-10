@@ -5,6 +5,7 @@ define(function (require) {
 
     var boidEngine = function (NUM_BOIDS, xBound, yBound, parameters, useErrorData, errorLevel) {
         this.boidSet = [];
+        this.signals = [];//allow the boids to communicate
         this.xBound = xBound;
         this.yBound = yBound;
         this.parameters = parameters;
@@ -27,6 +28,9 @@ define(function (require) {
 
 
     function updateBOIDS() {
+
+        var newSignalSet = [];
+
         for (var i = 0; i < this.boidSet.length; i++) {
 
             if (this.boidSet[i].isTarget) {
@@ -36,8 +40,28 @@ define(function (require) {
             }
 
             var nhdBOIDS = findBOIDSNearTarget.call(this, this.boidSet[i]);
-            this.boidSet[i].update(nhdBOIDS);
+            var filteredSignals = findSignalsNearTarget.call(this, this.boidSet[i]);
+
+            var boidResponse = this.boidSet[i].update(nhdBOIDS, filteredSignals);
+            if (boidResponse !== null)
+                newSignalSet.push(boidResponse);
         }
+
+        this.signals = newSignalSet;
+    }
+
+    function findSignalsNearTarget(current) {
+        var result = [];
+
+        for (var j = 0; j < this.signals.length; j++) {
+            var distance = distanceMetric.call(this, this.signals[j], current);
+
+            if (distance < current.boid_nhd && distance !== 0) {
+                result.push(this.signals[j]);
+            }
+        }
+
+        return result;
     }
 
     function findBOIDSNearTarget(current) {

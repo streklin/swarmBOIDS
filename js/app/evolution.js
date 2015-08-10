@@ -5,11 +5,11 @@ define(function (require) {
     var $ = require('jquery');
 
     var EVOLUTION_CONSTANTS = {
-        MAX_NHD_SIZE: 250,
-        MAX_SPEED: 30,
-        MAX_DELTA_SPEED: 30,
+        MAX_NHD_SIZE: 75,
+        MAX_SPEED: 20,
+        MAX_DELTA_SPEED: 20,
         MAX_DELTA_ORIENTATION: 1,
-        MAX_BOID_DISTANCE: 500
+        MAX_BOID_DISTANCE: 150
     };
 
     var evolution = function (populationSize, trials, mutationRate, crossOverRate, xLimit, yLimit) {
@@ -23,7 +23,10 @@ define(function (require) {
         this.population = [];
     };
 
-    evolution.prototype.run = function (num_boids) {
+    evolution.prototype.run = function (num_boids, errorLevel) {
+
+        this.errorLevel = errorLevel;
+
         initializePopulation.call(this);
 
         for (var t = 0; t < this.trials; t++) {
@@ -38,9 +41,9 @@ define(function (require) {
             for (var p = 0; p < this.populationSize; p++) {
 
                 var parameters = this.population[p];
-                var simulation = new simulatorObj(parameters, this.xLimit, this.yLimit, num_boids);
+                var simulation = new simulatorObj(parameters, this.xLimit, this.yLimit, num_boids, errorLevel);
 
-                var fitnessResults = simulation.run(5, 1500);
+                var fitnessResults = simulation.run(5, 1000);
 
                 //calculate fitness statistics
                 var average = Statistics.findAverage(fitnessResults);
