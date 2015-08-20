@@ -11,7 +11,7 @@ define(function(require) {
 
             var current = this.boidSet[i];
 
-            if (current.isTarget) continue;
+            //if (current.isTarget) continue;
 
             current.x += current.speed * Math.cos(current.orientation);
             current.y += current.speed * Math.sin(current.orientation);

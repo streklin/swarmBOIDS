@@ -19,8 +19,6 @@ define(function (require) {
 
     BOID.prototype.update = function (nearbyBOIDS, signals) {
 
-        var transmission = {};
-
         if (nearbyBOIDS.length === 0) return calculateTransmission(signals, this.x, this.y);
 
         var averageSpeed = 0;
@@ -58,7 +56,8 @@ define(function (require) {
 
                 var signal = {
                     xs: targetX,
-                    ys: targetY
+                    ys: targetY,
+                    ts: 0
                 };
 
                 signals.push(signal);
@@ -172,19 +171,24 @@ define(function (require) {
     function calculateTransmission(signals,x, y) {
         if (signals.length == 0) return null;
 
-        var xPos = 0;
-        var yPos = 0;
-
+        //find the newest signal, if that signal is older than 3 iterations do not re-transmit
+        var result = null;
+        var ts = 10;
         for (var index = 0; index < signals.length; index++) {
-            xPos += signals[index].xs;
-            yPos += signals[index].ys;
+            if (signals[index].ts < ts) {
+                result = signals[index];
+                ts = result.ts;
+            }
         }
+
+        if (ts > 3) return null;
 
         return {
             x: x,
             y: y,
-            xs: xPos / signals.length,
-            ys: yPos / signals.length
+            xs: result.xs,
+            ys: result.ys,
+            ts: result.ts + 1
         };
     }
 

@@ -36,6 +36,7 @@ define(function (require) {
             if (this.boidSet[i].isTarget) {
                 var nhdBOIDS = findBOIDSNearTarget.call(this, this.boidSet[i]);
                 this.fitness += nhdBOIDS.length;
+                this.boidSet[i].update([], []);
                 continue;
             }
 
@@ -104,7 +105,7 @@ define(function (require) {
     function initializeTargetBOID() {
         this.targetBOID = new BOID(this.parameters, this.xBound, this.yBound);
         this.targetBOID.isTarget = true;
-        this.targetBOID.speed = 0;
+        //this.targetBOID.speed = 0;
         this.boidSet.push(this.targetBOID);
     }
 
