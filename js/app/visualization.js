@@ -43,6 +43,7 @@ define(function (require) {
         this.engine = new boidEngine(num_boids, x, y, parameters, true,  errorLevel);
         this.physicsEngine = new physics(this.engine.boidSet, x, y);
         this.displayObject.boidSet = this.engine.boidSet;
+        this.displayObject.obstacleSet = this.engine.obstacles;
         this.displayObject.draw();
     }
 

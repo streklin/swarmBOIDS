@@ -17,9 +17,13 @@ define(function (require) {
 
     };
 
-    BOID.prototype.update = function (nearbyBOIDS, signals) {
+    BOID.prototype.update = function (nearbyBOIDS, signals, obstacles) {
 
-        if (nearbyBOIDS.length === 0) return calculateTransmission(signals, this.x, this.y);
+        //if (nearbyBOIDS.length === 0) return calculateTransmission(signals, this.x, this.y);
+        if (this.isTarget) {
+            updateTarget.call(this,obstacles);
+            return;
+        }
 
         var averageSpeed = 0;
         var averagePositionX = 0;
@@ -74,6 +78,16 @@ define(function (require) {
 
         }
 
+        //check the obstacles, if we are too close to one we need to avoid it
+        var hasObstacle = false;
+        if (obstacles.length > 0) {
+            obstacles.sort(function(a,b) {
+                return a.distance - b.distance;
+            });
+
+            hasObstacle = true;
+        }
+
         averagePositionX /= nearbyBOIDS.length;
         averagePositionY /= nearbyBOIDS.length;
         averageSpeed /= nearbyBOIDS.length;
@@ -88,7 +102,9 @@ define(function (require) {
 
         averageSpeedRule.call(this, averageSpeed);
 
-        if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
+        if (hasObstacle && obstacles[0].distance < this.BOID_CONSTANTS.min_boid_distance) {
+            tooCloseRule.call(this, obstacles[0]);
+        } else if (closestsDistance < this.BOID_CONSTANTS.min_boid_distance) {
             tooCloseRule.call(this, closestBoid);
         } else if (believedTarget !== null) {
             targetRule.call(this, believedTarget.xs, believedTarget.ys);
@@ -101,6 +117,22 @@ define(function (require) {
         return believedTarget;
 
     };
+
+    function updateTarget(obstacles) {
+        //check the obstacles, if we are too close to one we need to avoid it
+        var hasObstacle = false;
+        if (obstacles.length > 0) {
+            obstacles.sort(function(a,b) {
+                return a.distance - b.distance;
+            });
+
+            hasObstacle = true;
+        }
+
+        if (hasObstacle && obstacles[0].distance < this.BOID_CONSTANTS.min_boid_distance) {
+            tooCloseRule.call(this, obstacles[0]);
+        }
+    }
 
     function averageSpeedRule(averageSpeed) {
         var deltaSpeed = this.BOID_CONSTANTS.delta_speed;
@@ -173,7 +205,7 @@ define(function (require) {
 
         //find the newest signal, if that signal is older than 3 iterations do not re-transmit
         var result = null;
-        var ts = 10;
+        var ts = 110;
         for (var index = 0; index < signals.length; index++) {
             if (signals[index].ts < ts) {
                 result = signals[index];
@@ -181,7 +213,7 @@ define(function (require) {
             }
         }
 
-        if (ts > 3) return null;
+        if (ts > 100) return null;
 
         return {
             x: x,

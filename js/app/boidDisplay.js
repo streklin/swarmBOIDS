@@ -3,6 +3,7 @@ define(function(require) {
     var BoidDisplay = function(width, height) {
 
         this.boidSet = [];
+        this.obstacleSet = [];
         setupCanvas.call(this, width, height);
 
     };
@@ -10,6 +11,10 @@ define(function(require) {
     BoidDisplay.prototype.draw = function() {
 
         this.canvasCTX.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (var j = 0; j < this.obstacleSet.length; j++) {
+            drawObstacle.call(this, this.obstacleSet[j]);
+        }
 
         for(var i = 0; i < this.boidSet.length; i++) {
             var currentBoid = this.boidSet[i];
@@ -22,6 +27,18 @@ define(function(require) {
         }
 
     };
+
+    function drawObstacle(obstacle) {
+
+        this.canvasCTX.beginPath();
+        this.canvasCTX.arc(obstacle.x, obstacle.y, obstacle.radius, 0, 2 * Math.PI, false);
+        this.canvasCTX.fillStyle = 'green';
+        this.canvasCTX.fill();
+        this.canvasCTX.lineWidth = 1;
+        this.canvasCTX.strokeStyle = '#003300';
+        this.canvasCTX.stroke();
+        this.canvasCTX.fillStyle = '#000';
+    }
 
     function drawTriangle(currentBoid) {
 

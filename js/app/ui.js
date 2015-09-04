@@ -30,7 +30,7 @@ define(function(require) {
         var num_boids = parseInt($('#num_boids').val());
 
 
-        var ea = new evolutionObj(10, 50, errorLevel, 0.40, 800, 800);
+        var ea = new evolutionObj(10, 500, errorLevel, 0.40, 800, 800);
         var results = ea.run(num_boids, errorLevel);
 
         console.log(results);

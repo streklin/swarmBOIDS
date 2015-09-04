@@ -9,7 +9,7 @@ define(function (require) {
         MAX_SPEED: 20,
         MAX_DELTA_SPEED: 20,
         MAX_DELTA_ORIENTATION: 1,
-        MAX_BOID_DISTANCE: 150
+        MAX_BOID_DISTANCE: 10
     };
 
     var evolution = function (populationSize, trials, mutationRate, crossOverRate, xLimit, yLimit) {
